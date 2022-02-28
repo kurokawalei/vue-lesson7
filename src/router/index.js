@@ -1,26 +1,53 @@
-import { createRouter, createWebHashHistory } from "vue-router";
-import Home from "../views/Home.vue";
+import { createRouter, createWebHashHistory } from 'vue-router'
+// import Home from '../views/Home.vue'
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
-    component: Home,
-  },
-  {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
-  },
-];
+    path: '/',
+    component: () => import(/* webpackChunkName: "about" */ '../views/FrontView.vue'),
+    children: [
+      {
+        path: '/',
+        name: '首頁',
+        component: () => import(/* webpackChunkName: "about" */ '../views/indexView.vue')
+      },
+      {
+        path: 'products',
+        name: '產品頁',
+        component: () => import(/* webpackChunkName: "about" */ '../views/ProductView.vue')
+      },
+      {
+        path: 'product/:id',
+        name: '產品內頁',
+        component: () => import(/* webpackChunkName: "about" */ '../views/Productinside.vue')
+      },
+      {
+        path: 'car',
+        name: '購物車',
+        component: () => import(/* webpackChunkName: "about" */ '../views/CardataView.vue')
+      }
+    ]
+  }, {
+    path: '/login',
+    component: () => import('../views/loginView.vue')
+  }, {
+    path: '/admin',
+    component: () => import(/* webpackChunkName: "about" */ '../views/DashboredView.vue'),
+    children: [
+
+      {
+        path: 'products',
+        component: () => import(/* webpackChunkName: "about" */ '../views/AdminProducts.vue')
+      }
+    ]
+  }
+]
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-});
+  linkActiveClass: 'active'
 
-export default router;
+})
+
+export default router
