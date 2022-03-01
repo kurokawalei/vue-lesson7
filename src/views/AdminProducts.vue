@@ -52,15 +52,27 @@
     </table>
     <pageinfo :pages="pageinfo" @changepage="getPrList"></pageinfo>
   </div>
+
+  <product-modal
+    ref="productModal"
+    :product="tempProduct"
+    :is-new="isNew"
+    @get-data="getPrList"
+  ></product-modal>
 </template>
 
 <script>
 import pageinfo from "@/components/pageView.vue";
+import ProductModal from "@/components/productModal.vue";
 export default {
   data() {
     return {
       isLoading: false,
       products: [],
+      tempProduct: {
+        imagesUrl: [],
+      },
+      isNew: false,
       pageinfo: {},
     };
   },
@@ -80,12 +92,28 @@ export default {
           console.log(er);
         });
     },
+    openModal(status , item) {
+      if (status === "add") {    
+        this.tempProduct = {};
+        this.isNew = true
+        this.$refs.productModal.openModal();
+      } else if (status === "edit") {
+        this.tempProduct = { ...item };
+        // console.log(this.tempProduct.id);
+        // if (!this.isNew) 使用put方法
+        this.isNew = false;
+        this.$refs.productModal.openModal();
+        // 點擊「刪除產品」，帶入的參數為 delete
+      }
+    },
   },
   components: {
     pageinfo,
+    ProductModal,
   },
   mounted() {
     this.getPrList();
+   
   },
 };
 </script>
