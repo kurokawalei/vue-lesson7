@@ -22,13 +22,24 @@
             <router-link class="nav-link" to="/">首頁</router-link>
           </li> -->
           <li class="nav-item">
+              <router-link target="_blank" class="nav-link" to="/"
+              >前台</router-link
+            >
+          </li>
+          <li class="nav-item">
             <router-link class="nav-link" to="/admin/products"
               >產品列表</router-link
+            >
+          </li>
+           <li class="nav-item">
+            <router-link class="nav-link" to="/admin/order"
+              >訂單</router-link
             >
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link" @click.prevent="out">登出</a>
           </li>
+           
         </ul>
       </div>
     </div>

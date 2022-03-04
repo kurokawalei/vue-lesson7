@@ -59,11 +59,14 @@
     :is-new="isNew"
     @get-data="getPrList"
   ></product-modal>
+ 
+   <DelModal :item="tempProduct"  @get-data="getPrList" ref="delModal"></DelModal>
 </template>
 
 <script>
 import pageinfo from "@/components/pageView.vue";
 import ProductModal from "@/components/productModal.vue";
+import DelModal from "@/components/DelModal.vue";
 export default {
   data() {
     return {
@@ -92,10 +95,10 @@ export default {
           console.log(er);
         });
     },
-    openModal(status , item) {
-      if (status === "add") {    
+    openModal(status, item) {
+      if (status === "add") {
         this.tempProduct = {};
-        this.isNew = true
+        this.isNew = true;
         this.$refs.productModal.openModal();
       } else if (status === "edit") {
         this.tempProduct = { ...item };
@@ -104,16 +107,22 @@ export default {
         this.isNew = false;
         this.$refs.productModal.openModal();
         // 點擊「刪除產品」，帶入的參數為 delete
+      } else if (status === "del") {
+       
+        this.tempProduct = { ...item }
+        this.$refs.delModal.openModal();
       }
     },
+    
+    
   },
   components: {
     pageinfo,
     ProductModal,
+    DelModal,
   },
   mounted() {
     this.getPrList();
-   
   },
 };
 </script>

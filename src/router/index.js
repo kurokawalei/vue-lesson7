@@ -38,6 +38,10 @@ const routes = [
       {
         path: 'products',
         component: () => import(/* webpackChunkName: "about" */ '../views/AdminProducts.vue')
+      },
+      {
+        path: 'order',
+        component: () => import(/* webpackChunkName: "about" */ '../views/OrderView.vue')
       }
     ]
   }

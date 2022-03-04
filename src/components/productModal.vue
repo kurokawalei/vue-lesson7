@@ -11,12 +11,12 @@
       <div class="modal-content border-0">
         <!-- Modal表頭背景色會隨「新增產品」或「修改產品」不同而變色 -->
         <div
-          :class="isNew ? 'bg-primary' : 'bg-success'"
+          :class="isNew ? 'bg-primary' : 'bg-warning'"
           class="modal-header text-white"
         >
           <h5 id="productModalLabel" class="modal-title text-center">
             <span v-if="isNew">新增產品</span>
-            <span v-else>編輯產品</span>
+            <span v-else style="color:#000;">編輯產品</span>
           </h5>
           <button
             type="button"
@@ -27,6 +27,68 @@
         </div>
         <div class="modal-body">
           <div class="row">
+            <div class="col-sm-4">
+              <div class="mb-3">
+                <label for="uploadImg" class="form-label">新增主圖</label>
+                <input
+                  type="file"
+                  class="form-control mb-3"
+                  id="uploadImg"
+                  ref="pathClear"
+                  @change="upload('main', $event)"
+                />
+                <img class="img-fluid mb-3" :src="tempProduct.imageUrl" />
+                <button
+                  class="btn btn-outline-danger btn-sm d-block w-100"
+                  v-if="tempProduct.imageUrl"
+                  @click="tempProduct.imageUrl = ''"
+                >
+                  刪除檔案
+                </button>
+              </div>
+              <!-- 多圖設置 file選擇檔案 -->
+              <div class="mb-3">
+                <div v-if="Array.isArray(tempProduct.imagesUrl)">
+                  <label for="uploadImgs" class="form-label">多圖設置</label>
+                  <input
+                    v-if="
+                      !tempProduct.imagesUrl.length ||
+                      tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]
+                    "
+                    type="file"
+                    class="form-control mb-3"
+                    id="uploadImgs"
+                    ref="pathesClear"
+                    @change="upload('sub', $event)"
+                  />
+                  <template
+                    v-for="(img, index) in tempProduct.imagesUrl"
+                    :key="index"
+                  >
+                    <img
+                      class="img-fluid"
+                      :src="tempProduct.imagesUrl[index]"
+                    />
+                    <button
+                      class="btn btn-outline-danger btn-sm d-block w-100 mb-3"
+                      @click="tempProduct.imagesUrl.splice(index, 1)"
+                    >
+                      刪除檔案
+                    </button>
+                  </template>
+                </div>
+                <div v-else>
+                  <label for="uploadImgs" class="form-label">多圖設置</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="uploadImgs"
+                    placeholder="請輸入圖片網址"
+                    @change="upload('sub', $event)"
+                  />
+                </div>
+              </div>
+            </div>
             <div class="col-sm-8">
               <div class="form-floating mb-3">
                 <input
@@ -123,6 +185,7 @@
                     class="form-control"
                     placeholder="請輸入說明內容"
                     v-model="tempProduct.content"
+                    style="height: 100px"
                   ></textarea>
                   <label for="content" class="form-label">說明內容</label>
                 </div>
@@ -143,67 +206,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-4">
-              <div class="mb-3">
-                <label for="uploadImg" class="form-label">新增主圖</label>
-                <input
-                  type="file"
-                  class="form-control mb-3"
-                  id="uploadImg"
-                  ref="pathClear"
-                  @change="upload('main', $event)"
-                /><img class="img-fluid" :src="tempProduct.imageUrl" />
-                <button
-                  class="btn btn-outline-danger btn-sm d-block w-100"
-                  v-if="tempProduct.imageUrl"
-                  @click="tempProduct.imageUrl = ''"
-                >
-                  刪除檔案
-                </button>
-              </div>
-              <!-- 多圖設置 file選擇檔案 -->
-              <div class="mb-3">
-                <div v-if="Array.isArray(tempProduct.imagesUrl)">
-                  <label for="uploadImgs" class="form-label">多圖設置</label>
-                  <input
-                    v-if="
-                      !tempProduct.imagesUrl.length ||
-                      tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]
-                    "
-                    type="file"
-                    class="form-control mb-3"
-                    id="uploadImgs"
-                    ref="pathesClear"
-                    @change="upload('sub', $event)"
-                  />
-                  <template
-                    v-for="(img, index) in tempProduct.imagesUrl"
-                    :key="index"
-                  >
-                    <img
-                      class="img-fluid"
-                      :src="tempProduct.imagesUrl[index]"
-                    />
-                    <button
-                      class="btn btn-outline-danger btn-sm d-block w-100 mb-3"
-                      @click="tempProduct.imagesUrl.splice(index, 1)"
-                    >
-                      刪除檔案
-                    </button>
-                  </template>
-                </div>
-                <div v-else>
-                  <label for="uploadImgs" class="form-label">多圖設置</label>
-                  <input
-                    type="file"
-                    class="form-control"
-                    id="uploadImgs"
-                    placeholder="請輸入圖片網址b"
-                    @change="upload('sub', $event)"
-                  />
-                </div>
-              </div>
-            </div>
+
             <!-- button end -->
           </div>
         </div>
@@ -231,60 +234,60 @@
 </template>
 
 <script>
-import Modal from 'bootstrap/js/dist/modal'
+import Modal from "bootstrap/js/dist/modal";
 export default {
-  props: ['product', 'isNew'],
-  emits: ['get-data'],
-  data () {
+  props: ["product", "isNew"],
+  emits: ["get-data"],
+  data() {
     return {
-      modal: '',
-      tempProduct: {}
-    }
+      modal: "",
+      tempProduct: {},
+    };
   },
   watch: {
-    product () {
-      this.tempProduct = JSON.parse(JSON.stringify(this.product)) // 因為單向數據流的關係，所以要用深拷貝另外見一個物件來存資料
-    }
+    product() {
+      this.tempProduct = JSON.parse(JSON.stringify(this.product)); // 因為單向數據流的關係，所以要用深拷貝另外見一個物件來存資料
+    },
   },
-  mounted () {
+  mounted() {
     this.modal = new Modal(this.$refs.productModal, {
       keyboard: false,
-      backdrop: 'static'
-    })
+      backdrop: "static",
+    });
   },
   methods: {
-    updateProduct () {
-      let url = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/admin/product`
-      let http = 'post'
+    updateProduct() {
+      let url = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/admin/product`;
+      let http = "post";
       if (!this.isNew) {
-        url = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/admin/product/${this.tempProduct.id}`
-        http = 'put'
-        console.log(url)
+        url = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/admin/product/${this.tempProduct.id}`;
+        http = "put";
+        console.log(url);
       }
       this.$http[http](url, { data: this.tempProduct })
         .then((response) => {
-          alert(response.data.message)
+          alert(response.data.message);
           // this.getProducts(); 這裡沒有getProducts()--外層的方法
-          this.$emit('get-data')
-          this.modal.hide()
+          this.$emit("get-data");
+          this.modal.hide();
           // this.productModal.hide();
         })
-        .catch((err) => {     
-          alert(err.data.message)
-        })
+        .catch((err) => {
+          alert(err.data.message);
+        });
     },
-    openModal () {
-      this.modal.show()
+    openModal() {
+      this.modal.show();
     },
-    hideModal () {
-      this.modal.hide()
+    hideModal() {
+      this.modal.hide();
     },
-    upload (isMain, event) {
+    upload(isMain, event) {
       console.dir(event);
-      const file = event.target.files[0]
+      const file = event.target.files[0];
       //console.log(file);
-      const formData = new FormData()
-      formData.append('file-to-upload', file)
+      const formData = new FormData();
+      formData.append("file-to-upload", file);
       //console.log( formData)
       this.$http
         .post(
@@ -292,30 +295,30 @@ export default {
           formData
         )
         .then((res) => {
-          if (isMain === 'main') {
-            this.tempProduct.imageUrl = res.data.imageUrl
-            this.$refs.pathClear.value = ''
+          if (isMain === "main") {
+            this.tempProduct.imageUrl = res.data.imageUrl;
+            this.$refs.pathClear.value = "";
           } else if (
-            isMain === 'sub' &&
+            isMain === "sub" &&
             !Array.isArray(this.tempProduct.imagesUrl)
           ) {
-            this.tempProduct.imagesUrl = []
-            console.log('a', res.data.imageUrl)
-            this.tempProduct.imagesUrl.push(res.data.imageUrl)
-            this.$refs.pathesClear.value = ''
+            this.tempProduct.imagesUrl = [];
+            console.log("a", res.data.imageUrl);
+            this.tempProduct.imagesUrl.push(res.data.imageUrl);
+            this.$refs.pathesClear.value = "";
           } else if (
-            isMain === 'sub' &&
+            isMain === "sub" &&
             Array.isArray(this.tempProduct.imagesUrl)
           ) {
-            console.log('b', res.data.imageUrl)
-            this.tempProduct.imagesUrl.push(res.data.imageUrl)
-            this.$refs.pathesClear.value = ''
+            console.log("b", res.data.imageUrl);
+            this.tempProduct.imagesUrl.push(res.data.imageUrl);
+            this.$refs.pathesClear.value = "";
           }
         })
         .catch((err) => {
-          console.log(err)
-        })
-    }
-  }
-}
+          console.log(err);
+        });
+    },
+  },
+};
 </script>
