@@ -249,31 +249,31 @@ export default {
       this.tempProduct = JSON.parse(JSON.stringify(this.product)); // 因為單向數據流的關係，所以要用深拷貝另外見一個物件來存資料
     },
   },
-  mounted() {
-    this.modal = new Modal(this.$refs.productModal, {
-      keyboard: false,
-      backdrop: "static",
-    });
-  },
   methods: {
     updateProduct() {
+
+    
       let url = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/admin/product`;
       let http = "post";
+
       if (!this.isNew) {
+        //修改產品
         url = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/admin/product/${this.tempProduct.id}`;
         http = "put";
-        console.log(url);
       }
+
       this.$http[http](url, { data: this.tempProduct })
-        .then((response) => {
-          alert(response.data.message);
+        .then((res) => {
+         
+          alert(res.data.message);
           // this.getProducts(); 這裡沒有getProducts()--外層的方法
           this.$emit("get-data");
           this.modal.hide();
-          // this.productModal.hide();
+  
         })
         .catch((err) => {
-          alert(err.data.message);
+         
+          console.log(err)
         });
     },
     openModal() {
@@ -283,6 +283,7 @@ export default {
       this.modal.hide();
     },
     upload(isMain, event) {
+      //圖片上傳
       console.dir(event);
       const file = event.target.files[0];
       //console.log(file);
@@ -319,6 +320,12 @@ export default {
           console.log(err);
         });
     },
+  },
+    mounted() {
+    this.modal = new Modal(this.$refs.productModal, {
+      keyboard: false,
+      backdrop: "static",
+    });
   },
 };
 </script>

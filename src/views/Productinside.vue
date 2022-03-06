@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="a-link text-center mt-5 mb-5 fs-2">
-      <router-link to="/products">回列表頁</router-link>
+      <router-link to="/products" class="btn btn-outline-secondary btn-lg">回列表頁</router-link>
     </div>
   </div>
 </template>
@@ -45,7 +45,7 @@ export default {
     return {
       product: {},
       isLoading: false,
-      qty: '1'
+      qty: 1
     }
   },
   methods: {
@@ -56,7 +56,7 @@ export default {
         `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/product/${id}`
       )
         .then((res) => {
-          console.log(res)
+         // console.log(res)
           this.product = res.data.product
           this.isLoading = false
         })

@@ -89,7 +89,7 @@ export default {
           this.products = res.data.products;
           this.pageinfo = res.data.pagination;
           this.isLoading = false;
-          console.log(this.pageinfo);
+         // console.log(this.pageinfo);
         })
         .catch((er) => {
           console.log(er);

@@ -18,7 +18,7 @@
       <tbody>
         <template v-for="(item, key) in orderList" :key="key">
           <tr :class="{ 'text-secondary': !item.is_paid }">
-            <td>{{item.id}}</td>
+            <td>{{ item.id }}</td>
             <td>{{ getDate(item.create_at) }}</td>
             <td><span v-text="item.user.email" v-if="item.user"></span></td>
             <td>
@@ -50,14 +50,14 @@
                 <button
                   class="btn btn-outline-primary btn-sm"
                   type="button"
-                  @click="openModal('view',item)"
+                  @click="openorderModal('view', item)"
                 >
                   檢視
                 </button>
                 <button
                   class="btn btn-outline-danger btn-sm"
                   type="button"
-                  @click="openModal('del' ,item)"
+                  @click="openorderModal('del', item)"
                 >
                   刪除
                 </button>
@@ -70,12 +70,14 @@
     <pageinfo :pages="pageinfo" @changepage="getoderList"></pageinfo>
   </div>
 
-  <delModal ref="delOrder" :temp-Order="tempOrder"  @get-data="getoderList"></delModal>
+  <orderModal ref="orderModal" :order="tempOrder"></orderModal>
 
+  <delModal ref="delOrder" :temp-Order="tempOrder"  @get-data="getoderList"></delModal>
 </template>
 
 <script>
 import pageinfo from "@/components/pageView.vue";
+import orderModal from "@/components/OrderModal.vue";
 import delModal from "@/components/DelorderModal.vue";
 
 export default {
@@ -84,13 +86,13 @@ export default {
       orderList: {},
       isLoading: false,
       pageinfo: {},
-      tempOrder:{}
-
+      tempOrder: {},
     };
   },
   components: {
     pageinfo,
     delModal,
+    orderModal,
   },
   methods: {
     getoderList(page = 1) {
@@ -113,16 +115,15 @@ export default {
       const date = new Date(time * 1000);
       return date.toLocaleDateString();
     },
-     openModal(status, item) {
+    openorderModal(status, item) {
       if (status === "view") {
-        this.tempOrder = { ...item }
-        alert('這是檢視')
+        this.tempOrder = { ...item };
+        console.log( this.tempOrder);
         //this.isNew = true;
-        this.$refs.productModal.openModal();
+         this.$refs.orderModal.openModal();
       } else if (status === "del") {
-       
-        this.tempOrder = { ...item }
-        console.log(this.tempOrder)
+        this.tempOrder = { ...item };
+         console.log('d'+ this.tempOrder);
         this.$refs.delOrder.openModal();
       }
     },
