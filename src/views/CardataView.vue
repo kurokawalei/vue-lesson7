@@ -46,9 +46,16 @@
             <td>
               <div class="input-group input-group-sm">
                 <div class="input-group mb-3">
-                  <!-- <select class="form-select" v-model="item.qty"  @change="upLoadItem(item)" panelHeight="100" :disabled="isloading === item.id" >
-                          <option v-for=" (num,i) in 99 " :value="num" :key="i" >{{num}}</option>
-                        </select> -->
+                  <select
+                    class="form-select"
+                    v-model="item.qty"
+                    @change="upLoadItem(item)"
+                    panelHeight="100"
+                  >
+                    <option v-for="(num, i) in 99" :value="num" :key="i">
+                      {{ num }}
+                    </option>
+                  </select>
                   <span class="input-group-text">{{ item.qty }}</span>
                   <span class="input-group-text" id="basic-addon2">{{
                     item.product.unit
@@ -79,47 +86,65 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       carData: {
-        carts: []
+        carts: [],
       },
-      isLoading: false
-    }
+      isLoading: false,
+    };
   },
   methods: {
-    getCarList () {
-      this.isLoading = true
+    getCarList() {
+      this.isLoading = true;
       this.$http(
         `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/cart`
       )
         .then((res) => {
-          this.carData = res.data.data
-
-          this.isLoading = false
+          this.carData = res.data.data;
+          this.isLoading = false;
         })
         .catch((er) => {
-          console.log(er)
-        })
+          console.log(er);
+        });
     },
-    removeItem (id) {
-      this.isLoading = true
-
+    upLoadItem(item) {
+      this.isLoading = true;
+      const data = {
+        product_id: item.id,
+        qty: item.qty,
+      };
+      this.$http
+        .put(
+          `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/cart/${item.id}`,
+          { data }
+        )
+        .then((res) => {
+          console.log(res);
+          this.getCarList();
+          this.isLoading = false;
+        })
+        .catch((er) => {
+          console.log(er);
+        });
+    },
+    removeItem(id) {
+      this.isLoading = true;
       this.$http
         .delete(
           `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/cart/${id}`
         )
         .then((res) => {
-          alert(res.data.message)
-          this.getCarList()
+          alert(res.data.message);
+          this.getCarList();
         })
         .catch((er) => {
-          console.log(er)
-        })
-    }
+          console.log(er);
+        });
+    },
   },
-  mounted () {
-    this.getCarList()
-  }
-}
+  mounted() {
+    this.getCarList();
+  },
+};
 </script>

@@ -17,7 +17,7 @@
       </thead>
       <tbody>
         <template v-for="(item, key) in orderList" :key="key">
-          <tr :class="{ 'text-secondary': !item.is_paid }">
+          <tr :class="{ 'table-active': item.is_paid }">
             <td>{{ item.id }}</td>
             <td>{{ getDate(item.create_at) }}</td>
             <td><span v-text="item.user.email" v-if="item.user"></span></td>
@@ -48,7 +48,7 @@
             <td>
               <div class="btn-group">
                 <button
-                  class="btn btn-outline-primary btn-sm"
+                  class="btn btn-outline-primary btn-sm me-2"
                   type="button"
                   @click="openorderModal('view', item)"
                 >
@@ -70,9 +70,17 @@
     <pageinfo :pages="pageinfo" @changepage="getoderList"></pageinfo>
   </div>
 
-  <orderModal ref="orderModal" :order="tempOrder"></orderModal>
+  <orderModal
+    ref="orderModal"
+    :order="tempOrder"
+    @get-data="getoderList"
+  ></orderModal>
 
-  <delModal ref="delOrder" :temp-Order="tempOrder"  @get-data="getoderList"></delModal>
+  <delModal
+    ref="delOrder"
+    :temp-Order="tempOrder"
+    @get-data="getoderList"
+  ></delModal>
 </template>
 
 <script>
@@ -87,6 +95,7 @@ export default {
       isLoading: false,
       pageinfo: {},
       tempOrder: {},
+      paidobj: {},
     };
   },
   components: {
@@ -118,18 +127,47 @@ export default {
     openorderModal(status, item) {
       if (status === "view") {
         this.tempOrder = { ...item };
-        console.log( this.tempOrder);
+        console.log(this.tempOrder);
         //this.isNew = true;
-         this.$refs.orderModal.openModal();
+        this.$refs.orderModal.openModal();
       } else if (status === "del") {
         this.tempOrder = { ...item };
-         console.log('d'+ this.tempOrder);
+        console.log("d" + this.tempOrder);
         this.$refs.delOrder.openModal();
       }
     },
+
+    updatePaid(item) {
+      this.isLoading = true;
+      //
+      this.paidobj = {
+        is_paid: item.is_paid,
+      };
+
+      let url = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/admin/order/${item.id}`;
+      this.$http
+        .put(url, { data: this.paidobj })
+        .then((res) => {
+          alert(res.data.message);
+          this.getoderList();
+        })
+        .catch((err) => {
+          console.dir(err);
+        });
+
+      //this.getoderList();
+    },
+    
   },
   mounted() {
     this.getoderList();
   },
+
+   metaInfo: {
+      title: '六腳音樂大舞台',
+    }
 };
+
+
 </script>
+

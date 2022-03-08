@@ -9,22 +9,42 @@ const routes = [
       {
         path: '/',
         name: '首頁',
-        component: () => import(/* webpackChunkName: "about" */ '../views/indexView.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../views/indexView.vue'),
+        meta: {
+          title: '黑川玩具批發店',
+        },
       },
       {
         path: 'products',
         name: '產品頁',
-        component: () => import(/* webpackChunkName: "about" */ '../views/ProductView.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../views/ProductView.vue'),
+        meta: {
+          title: '黑川玩具批發店|產品列表頁',
+        },
       },
       {
         path: 'product/:id',
         name: '產品內頁',
-        component: () => import(/* webpackChunkName: "about" */ '../views/Productinside.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../views/Productinside.vue'),
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: 'car',
         name: '購物車',
-        component: () => import(/* webpackChunkName: "about" */ '../views/CardataView.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../views/CardataView.vue'),
+        meta: {
+          title: '黑川玩具批發店|購物車頁',
+        },
+      },
+      {
+        path: 'orderover',
+        name: '結帳頁面',
+        component: () => import(/* webpackChunkName: "about" */ '../views/orderOver.vue'),
+        meta: {
+          title: '黑川玩具批發店|結帳頁',
+        },
       }
     ]
   }, {

@@ -21,9 +21,8 @@
           ></button>
         </div>
         <div class="modal-body">
-          是否刪除
-          <strong class="text-danger">{{ tempOrder.id }}</strong>
-          訂單(刪除後將無法恢復)。
+          <p>是否刪除<strong class="text-danger me-2 ms-2">{{ tempOrder.id }}</strong>訂單<br>(刪除後將無法恢復)。</p>
+          <p>訂購時間： {{ getDate(tempOrder.create_at) }}</p>
         </div>
         <div class="modal-footer">
           <button
@@ -85,6 +84,11 @@ export default {
     },
     hideModal() {
       this.modal.hide();
+    },
+     getDate(time) {
+      //時間處理
+      const date = new Date(time * 1000);
+      return date.toLocaleDateString();
     },
   },
   mounted() {

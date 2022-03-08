@@ -34,7 +34,7 @@
         </ul>
 
         <div class="position-absolute cart-box">
-          <a class="btn-primary position-relative">
+          <router-link  to="/orderover" class="btn-primary position-relative">
           
             <i class="bi bi-cart"></i>
               結帳
@@ -51,7 +51,7 @@
             >
               {{ cartData.carts.length }}
             </span>
-          </a>
+          </router-link>
         </div>
       </div>
     </div>
