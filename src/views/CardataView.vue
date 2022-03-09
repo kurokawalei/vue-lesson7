@@ -64,7 +64,7 @@
               </div>
             </td>
             <td class="text-center">
-              {{ item.product.price }}
+             ${{ item.product.price }}元
               <!-- <small class="text-success">折扣價：</small> -->
             </td>
           </tr>
@@ -73,7 +73,7 @@
       <tfoot>
         <tr>
           <td colspan="3" class="text-end">總計</td>
-          <td class="text-center">{{ carData.total }}</td>
+          <td class="text-center">${{ carData.total }}元</td>
         </tr>
         <!-- <tr>
                 <td colspan="3" class="text-end text-success">折扣價</td>

@@ -10,8 +10,9 @@
         <p class="fs-4 under-throughline"> 原價：{{ product.origin_price }}元</p>
         <p class="fs-4">售價：{{ product.price }}元</p>
         <p class="main">
-          {{ product.description }}
+          {{ product.content }}
         </p>
+        
         <div class="row">
           <div class="col">
                <select class="form-select" v-model.number="qty" panelHeight="100">

@@ -9,7 +9,7 @@
   >
     <div class="modal-dialog modal-xl">
       <div class="modal-content border-0">
-        <!-- Modal表頭背景色會隨「新增產品」或「修改產品」不同而變色 -->
+       
         <div
           :class="isNew ? 'bg-primary' : 'bg-warning'"
           class="modal-header text-white"
