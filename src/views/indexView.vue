@@ -4,7 +4,9 @@
       <h1 class="h1">黑川玩具店</h1>
       <p>在這裡，年齡不是界限，快樂才是追求。</p>
       <p>只要走進來，都可以尋找到屬於你的快樂！</p>
-      <router-link to="/products" class="btn-warning btn btn-lg">開始逛逛!</router-link>
+      <router-link to="/products" class="btn-warning btn btn-lg"
+        >開始逛逛!</router-link
+      >
     </div>
   </div>
 </template>
@@ -23,6 +25,20 @@
     top: 50%;
     transform: translate(-50%, -50%);
     font-size: 2rem;
+  }
+}
+
+@media (max-width: 769px) {
+  .bg {
+    .main-info {
+      position: relative;
+      right: inherit;
+      left: 50%;
+      top: 30%;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+      width: 90%;
+    }
   }
 }
 </style>
