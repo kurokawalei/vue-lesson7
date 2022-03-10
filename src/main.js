@@ -7,6 +7,8 @@ import VueAxios from 'vue-axios'
 import Loading from 'vue3-loading-overlay'
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css'
 
+
+
 import { Field, Form, ErrorMessage, defineRule, configure } from 'vee-validate'
 // Vee Validate－規則
 import { required, email, min } from '@vee-validate/rules'
@@ -28,6 +30,7 @@ configure({
 })
 setLocale('zh_TW')
 
+
 createApp(App)
   .use(router)
   .use(VueAxios, axios)
@@ -38,6 +41,8 @@ createApp(App)
   .component(VueMeta , {
     refreshOnceOnNavigation: true,
   })
+
+  
 
   .mount('#app')
 

@@ -79,6 +79,7 @@ export default {
       pageinfo: {},
     };
   },
+  imject:['emitter'],
   methods: {
     getPrList(page = 1) {
       this.isLoading = true;
@@ -106,6 +107,7 @@ export default {
         // if (!this.isNew) 使用put方法
         this.isNew = false;
         this.$refs.productModal.openModal();
+      
         // 點擊「刪除產品」，帶入的參數為 delete
       } else if (status === "del") {
        

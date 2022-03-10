@@ -13,7 +13,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <router-link class="nav-link navbar-brand" to="/admin"
+      <router-link class="nav-link navbar-brand" to="/admin/products"
         >黑川玩具店</router-link
       >
       <div class="collapse navbar-collapse" id="navbarTogglerDemo03">

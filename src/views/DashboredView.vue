@@ -1,14 +1,23 @@
 <template>
   <NavBarBored></NavBarBored>
+  <ToastMessages></ToastMessages>
   <router-view v-if="checkSuccess"></router-view>
 </template>
 
 <script>
+import emitter from '@/libs/mitter'
 import NavBarBored from '@/components/DasbordeNav.vue'
+import ToastMessages from '@/components/ToastMessages.vue'
+
 export default {
   data () {
     return {
       checkSuccess: false
+    }
+  },
+  provide(){
+    return{
+      emitter,
     }
   },
   methods: {
@@ -32,7 +41,9 @@ export default {
     }
   },
   components: {
-    NavBarBored
+    NavBarBored,
+    ToastMessages
+   
   },
   mounted () {
     this.checkLogin()

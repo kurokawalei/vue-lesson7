@@ -238,6 +238,7 @@ import Modal from "bootstrap/js/dist/modal";
 export default {
   props: ["product", "isNew"],
   emits: ["get-data"],
+  inject:['emitter'],
   data() {
     return {
       modal: "",
@@ -265,10 +266,17 @@ export default {
       this.$http[http](url, { data: this.tempProduct })
         .then((res) => {
          
-          alert(res.data.message);
+         
           // this.getProducts(); 這裡沒有getProducts()--外層的方法
           this.$emit("get-data");
           this.modal.hide();
+
+          this.emitter.emit('push-message', {
+          style:'success',
+          title:'更新成功',
+          content:res.data.message
+        
+        })
   
         })
         .catch((err) => {
