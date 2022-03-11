@@ -98,6 +98,7 @@ export default {
       paidobj: {},
     };
   },
+  inject:['emitter'],
   components: {
     pageinfo,
     delModal,
@@ -148,7 +149,11 @@ export default {
       this.$http
         .put(url, { data: this.paidobj })
         .then((res) => {
-          alert(res.data.message);
+          this.emitter.emit("push-message", {
+            style: "success",
+            title: "已更新",
+            content: res.data.message,
+          });
           this.getoderList();
         })
         .catch((err) => {
@@ -157,17 +162,11 @@ export default {
 
       //this.getoderList();
     },
-    
   },
   mounted() {
     this.getoderList();
-  },
+  }
 
-   metaInfo: {
-      title: '六腳音樂大舞台',
-    }
 };
-
-
 </script>
 

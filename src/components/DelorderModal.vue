@@ -52,6 +52,7 @@ import Modal from "bootstrap/js/dist/modal";
 
 export default {
   props: ["tempOrder"],
+  inject:['emitter'],
   data() {
     return {
       modal: "",
@@ -66,7 +67,13 @@ export default {
           `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/admin/order/${this.tempOrder.id}`
         )
         .then((res) => {
-          alert(res.data.message);
+          
+            this.emitter.emit("push-message", {
+            style: "success",
+            title: "已更新",
+            content: res.data.message,
+          });
+          
 
           //更新渲染
           this.$emit("get-data");

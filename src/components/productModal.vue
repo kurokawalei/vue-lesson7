@@ -9,14 +9,13 @@
   >
     <div class="modal-dialog modal-xl">
       <div class="modal-content border-0">
-       
         <div
           :class="isNew ? 'bg-primary' : 'bg-warning'"
           class="modal-header text-white"
         >
           <h5 id="productModalLabel" class="modal-title text-center">
             <span v-if="isNew">新增產品</span>
-            <span v-else style="color:#000;">編輯產品</span>
+            <span v-else style="color: #000">編輯產品</span>
           </h5>
           <button
             type="button"
@@ -238,7 +237,7 @@ import Modal from "bootstrap/js/dist/modal";
 export default {
   props: ["product", "isNew"],
   emits: ["get-data"],
-  inject:['emitter'],
+  inject: ["emitter"],
   data() {
     return {
       modal: "",
@@ -247,13 +246,11 @@ export default {
   },
   watch: {
     product() {
-      this.tempProduct = JSON.parse(JSON.stringify(this.product)); // 因為單向數據流的關係，所以要用深拷貝另外見一個物件來存資料
+      this.tempProduct = JSON.parse(JSON.stringify(this.product)); // 因為單向數據流的關係，所以要用深拷貝另外一個物件來存資料
     },
   },
   methods: {
     updateProduct() {
-
-    
       let url = `${process.env.VUE_APP_API}/v2/api/${process.env.VUE_APP_PATH}/admin/product`;
       let http = "post";
 
@@ -265,23 +262,21 @@ export default {
 
       this.$http[http](url, { data: this.tempProduct })
         .then((res) => {
-         
-         
-          // this.getProducts(); 這裡沒有getProducts()--外層的方法
+          // 外層的方法
           this.$emit("get-data");
           this.modal.hide();
-
-          this.emitter.emit('push-message', {
-          style:'success',
-          title:'更新成功',
-          content:res.data.message
-        
-        })
-  
+          this.emitter.emit("push-message", {
+            style: "success",
+            title: "已更新",
+            content: res.data.message,
+          });
         })
         .catch((err) => {
-         
-          console.log(err)
+          this.emitter.emit("push-message", {
+            style: "danger",
+            title: "更新失敗",
+            content: err.data
+          });
         });
     },
     openModal() {
@@ -307,21 +302,34 @@ export default {
           if (isMain === "main") {
             this.tempProduct.imageUrl = res.data.imageUrl;
             this.$refs.pathClear.value = "";
+            this.emitter.emit("push-message", {
+              style: "success",
+              title: "已更新",
+              content: res.data.message,
+            });
           } else if (
             isMain === "sub" &&
             !Array.isArray(this.tempProduct.imagesUrl)
           ) {
             this.tempProduct.imagesUrl = [];
-            console.log("a", res.data.imageUrl);
             this.tempProduct.imagesUrl.push(res.data.imageUrl);
             this.$refs.pathesClear.value = "";
+            this.emitter.emit("push-message", {
+              style: "success",
+              title: "已更新",
+              content: res.data.message,
+            });
           } else if (
             isMain === "sub" &&
             Array.isArray(this.tempProduct.imagesUrl)
           ) {
-            console.log("b", res.data.imageUrl);
             this.tempProduct.imagesUrl.push(res.data.imageUrl);
             this.$refs.pathesClear.value = "";
+            this.emitter.emit("push-message", {
+              style: "success",
+              title: "已更新",
+              content: res.data.message,
+            });
           }
         })
         .catch((err) => {
@@ -329,7 +337,7 @@ export default {
         });
     },
   },
-    mounted() {
+  mounted() {
     this.modal = new Modal(this.$refs.productModal, {
       keyboard: false,
       backdrop: "static",

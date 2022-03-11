@@ -115,6 +115,7 @@ import Modal from "bootstrap/js/dist/modal";
 export default {
   props: ["order"],
   emits: ["get-data"],
+  inject: ["emitter"],
   data() {
     return {
       modal: "",
@@ -124,7 +125,7 @@ export default {
   },
   watch: {
     order() {
-      this.tempOder = JSON.parse(JSON.stringify(this.order)); // 因為單向數據流的關係，所以要用深拷貝另外見一個物件來存資料
+      this.tempOder = JSON.parse(JSON.stringify(this.order)); // 因為單向數據流的關係，所以要用深拷貝另外一個物件來存資料
     },
   },
   methods: {
@@ -138,7 +139,11 @@ export default {
       this.$http
         .put(url, { data: this.tempOder })
         .then((res) => {
-          alert(res.data.message);
+          this.emitter.emit("push-message", {
+            style: "success",
+            title: "已更新",
+            content: res.data.message,
+          });
           //傳外層
           this.$emit("get-data");
         })
