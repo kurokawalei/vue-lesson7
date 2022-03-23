@@ -50,8 +50,9 @@ export default {
   },
   methods: {
     signIn () {
-      this.isLoading = true
-      this.$http.post(`${process.env.VUE_APP_API}/admin/signin`, this.user)
+      this.isLoading = true;
+     
+      this.$http.post(`${process.env.VUE_APP_API}/v2/admin/signin`, this.user)
         .then((res) => {
           const { token, expired } = res.data
           document.cookie = `hexToken=${token};expires=${new Date(expired)};`

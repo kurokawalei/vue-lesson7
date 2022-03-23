@@ -84,7 +84,7 @@ export default {
     },
   },
   mounted() {
-    this.getCarList();
+   
     emitter.on("get-cart", () => {
       this.getCarList();
     });

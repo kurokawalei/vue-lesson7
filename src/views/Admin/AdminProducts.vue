@@ -1,5 +1,7 @@
 <template>
-  <Loading :active="isLoading"></Loading>
+  <Loading :active="isLoading">
+   <img src="https://upload.cc/i1/2022/03/13/3uBJIw.png">
+  </Loading>
   <div class="text-center mt-3 mb-3"><h2>後台產品列表</h2></div>
   <div class="container">
     <div class="text-end mt-4">

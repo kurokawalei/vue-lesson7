@@ -52,16 +52,16 @@ const routes = [
     component: () => import('../views/loginView.vue')
   }, {
     path: '/admin',
-    component: () => import(/* webpackChunkName: "about" */ '../views/DashboredView.vue'),
+    component: () => import(/* webpackChunkName: "about" */ '../views/Admin/DashboredView.vue'),
     children: [
 
       {
         path: 'products',
-        component: () => import(/* webpackChunkName: "about" */ '../views/AdminProducts.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../views/Admin/AdminProducts.vue')
       },
       {
         path: 'order',
-        component: () => import(/* webpackChunkName: "about" */ '../views/OrderView.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../views/Admin/OrderView.vue')
       }
     ]
   }
